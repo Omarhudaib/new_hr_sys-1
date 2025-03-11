@@ -1,0 +1,59 @@
+
+.hero-section, .author-section {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.parallax-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-shadow: none;
+}
+
+.gallery-item {
+  perspective: 1500px;
+}
+
+.gallery-img {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.hover_to-black {
+  position: relative;
+}
+
+.hero-button {
+  padding: 14px 36px;
+  border-radius: 30px;
+  font-weight: 600;
+}
+
+.form-control {
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  background: rgba(255,255,255,0.1);
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 80vh;
+  }
+  .parallax-background {
+    background-attachment: scroll;
+  }
+}

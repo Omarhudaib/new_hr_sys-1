@@ -1,0 +1,123 @@
+/* Root Variables */
+:root {
+
+    --secondary-color: #4f46e5; /* Bright Blue */
+    --hover-color: #6e6fc5; /* Hover Blue */
+    --active-color: #4f74ee; /* Active Blue */
+    --text-color: #ffffff; /* White Text */
+    --danger-color: #ef4444; /* Red for Logout */
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+  }
+  
+  /* Sidebar Container */
+  .p-3.text-white.shadow-lg.min-vh-100.bg-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    box-shadow: var(--shadow);
+    color: var(--text-color);
+    transition: var(--transition);
+    overflow-y: auto;
+  }
+  
+  /* Scrollbar Styling */
+  .p-3.text-white.shadow-lg.min-vh-100.bg-primary::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .p-3.text-white.shadow-lg.min-vh-100.bg-primary::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+  
+  .p-3.text-white.shadow-lg.min-vh-100.bg-primary::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+  }
+  
+  /* Brand Title */
+  .mb-4.d-flex.justify-content-between.align-items-center h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    background: linear-gradient(90deg, #6366f1, #4f46e5);
+    -webkit-background-clip: text;
+    color: transparent;
+    transition: var(--transition);
+  }
+  
+  /* Collapse Button */
+  .btn.btn-white.rounded-circle {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--text-color);
+    transition: var(--transition);
+  }
+  
+  .btn.btn-white.rounded-circle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+  }
+  
+  /* Sidebar Items */
+  nav .d-flex.align-items-center.gap-2.p-2.rounded {
+    margin: 4px 0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: var(--transition);
+  }
+  
+  nav .d-flex.align-items-center.gap-2.p-2.rounded:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
+  }
+  
+  nav .d-flex.align-items-center.gap-2.p-2.rounded.active {
+    background: var(--active-color);
+    color: var(--text-color);
+  }
+  
+  /* Sidebar Dropdown Toggle */
+  .gap-2.p-2.text-white.rounded.d-flex.align-items-center {
+    margin: 4px 0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .gap-2.p-2.text-white.rounded.d-flex.align-items-center:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
+  }
+  
+  /* Dropdown Links */
+  .border-white.ms-3.border-start.ps-2 {
+    margin-top: 8px;
+    border-left: 2px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .py-1.text-white.d-block.text-decoration-none {
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: var(--transition);
+  }
+  
+  .py-1.text-white.d-block.text-decoration-none:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
+  }
+  
+  /* Active Link */
+  .py-1.text-white.d-block.text-decoration-none.active {
+    background: var(--active-color);
+    color: var(--text-color);
+  }
+  
+  /* Logout Button */
+  .text-danger {
+    color: var(--danger-color) !important;
+  }
+  
+  .text-danger:hover {
+    background: rgba(239, 68, 68, 0.2);
+    transform: translateX(4px);
+  }

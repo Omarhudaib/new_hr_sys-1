@@ -1,0 +1,19 @@
+{
+  "builds": [
+    {
+      "src": "composer.json",
+      "use": "@vercel/php"
+    },
+    {
+      "src": "public/index.php",
+      "use": "@vercel/php"
+    }
+  ],
+  "env": {
+    "APP_KEY": "your_app_key",
+    "DB_HOST": "your_db_host",
+    "DB_DATABASE": "your_db_name",
+    "DB_USERNAME": "your_db_username",
+    "DB_PASSWORD": "your_db_password"
+  }
+}
