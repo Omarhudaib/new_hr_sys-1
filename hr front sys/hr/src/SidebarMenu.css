@@ -141,4 +141,22 @@
       width: 100%;
     }
   }
-  
+/* Toggle Button */
+.sidebar-toggle {
+  display: none;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  color: var(--text-color);
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.sidebar-toggle:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+

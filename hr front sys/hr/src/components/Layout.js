@@ -9,7 +9,7 @@ const Layout = () => {
       <SidebarMenu />
 
       {/* محتوى الصفحة */}
-      <div className="flex-grow-1 p-4" style={{ width: "100%" }}>
+      <div className="p-1 flex-grow-1" style={{ width: "100%" }}>
         <Outlet />
       </div>
     </div>

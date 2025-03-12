@@ -281,7 +281,7 @@ const Dashboard = () => {
             
     <form onSubmit={handleSubmit} className="row g-3">
       <div className="col-auto">
-        <label htmlFor="month" className="form-label">Month</label>
+      
         <input
           id="month"
           type="number"
@@ -296,7 +296,7 @@ const Dashboard = () => {
         />
       </div>
       <div className="col-auto">
-        <label htmlFor="year" className="form-label">Year</label>
+       
         <input
           id="year"
           type="number"
