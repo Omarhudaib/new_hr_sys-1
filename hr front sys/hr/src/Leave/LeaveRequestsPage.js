@@ -288,16 +288,10 @@ const LeaveRequestsPage = () => {
         <td>{leaveRequest.start_date}</td>
         <td>{leaveRequest.end_date}</td>
         <td>
-          <Form.Control
-            as="select"
-            value={leaveRequest.status}
-            onChange={(e) => handleStatusChange(e, leaveRequest.id)}
-          >
-            <option value="pending">Pending</option>
-            <option value="approved">Approved</option>
-            <option value="rejected">Rejected</option>
-          </Form.Control>
-        </td>
+  {/* Display current status */}
+  <span>{leaveRequest.status}</span>
+</td>
+
         <td>
           {leaveRequest.image_path ? (
             <div className="mt-2">

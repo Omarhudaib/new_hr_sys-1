@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../LoadingSpinner';  // Import the LoadingSpinner component
 
 const DepartmentPage = () => {
@@ -8,8 +8,12 @@ const DepartmentPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [mapLocation, setMapLocation] = useState(null);
     const navigate = useNavigate();
     const companyCode = JSON.parse(localStorage.getItem('company'))?.company_code;
+
+    const closeMapModal = () => setShowModal(false);
 
     useEffect(() => {
         if (!companyCode) {
@@ -19,20 +23,6 @@ const DepartmentPage = () => {
         }
     }, [companyCode, navigate]);
 
-    useEffect(() => {
-        if (!companyCode) {
-            navigate('/login'); // Redirect to login if no companyCode is found
-        } else {
-            const storedDepartments = localStorage.getItem('departments'); // Check if departments are already stored
-            if (storedDepartments) {
-                setDepartments(JSON.parse(storedDepartments)); // Load departments from localStorage
-                setLoading(false);
-            } else {
-                fetchDepartments(); // Fetch departments if not in localStorage
-            }
-        }
-    }, [companyCode, navigate]);
-    
     const fetchDepartments = async () => {
         try {
             const token = localStorage.getItem('authToken');
@@ -51,7 +41,6 @@ const DepartmentPage = () => {
             setLoading(false);
         }
     };
-    
 
     const handleAddDepartment = () => {
         navigate('/departments/create'); // Navigate to the add department page
@@ -87,6 +76,11 @@ const DepartmentPage = () => {
         department.loc_name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const showLocationModal = (latitude, longitude) => {
+        setMapLocation({ latitude, longitude });
+        setShowModal(true);
+    };
+
     return (
         <div className="container-fluid">
             {/* Navbar */}
@@ -99,8 +93,6 @@ const DepartmentPage = () => {
 
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav d-flex align-items-center ">
-                     
-  
                             <li className="nav-item ">
                                 {/* Search Bar */}
                                 <input
@@ -115,7 +107,6 @@ const DepartmentPage = () => {
                     </div>
                 </div>
             </nav>
-
 
             {/* Loading Spinner */}
             {loading ? (
@@ -142,9 +133,8 @@ const DepartmentPage = () => {
                                         <td>{department.dep_name}</td>
                                         <td>{department.loc_name} 
                                             <a
-                                                href={`https://www.google.com/maps?q=${department.latitude},${department.longitude}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
+                                                href="#"
+                                                onClick={() => showLocationModal(department.latitude, department.longitude)}
                                                 className="bg-transparent border-0"
                                             >
                                                 <i className="bi bi-eye-fill text-primary" style={{ fontSize: "1.25rem" }}></i>
@@ -173,6 +163,32 @@ const DepartmentPage = () => {
                             )}
                         </tbody>
                     </table>
+                </div>
+            )}
+
+            {showModal && mapLocation && (
+                <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Location on Google Maps</h5>
+                                <button type="button" className="btn-close" onClick={closeMapModal} aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                                <iframe
+                                    title="Google Maps Location"
+                                    width="100%"
+                                    height="400"
+                                    src={`https://www.google.com/maps?q=${mapLocation.latitude},${mapLocation.longitude}&hl=es;z=14&output=embed`}
+                                    frameBorder="0"
+                                    style={{ border: 0 }}
+                                    allowFullScreen=""
+                                    aria-hidden="false"
+                                    tabIndex="0"
+                                ></iframe>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

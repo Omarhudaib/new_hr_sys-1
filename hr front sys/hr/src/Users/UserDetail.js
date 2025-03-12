@@ -36,7 +36,7 @@ const UserDetail = () => {
 
   if (!user) {
     return (
-      <div className="container mt-5 text-center">
+      <div className="container mt-1 text-center">
         <h3>User not found</h3>
         <p>404 - The requested user does not exist.</p>
       </div>
