@@ -29,14 +29,16 @@ import MissingCheckoutsPage from "./Company/MissingCheckoutsPage";
 import CheckInSummaryDep from "./Company/CheckInSummaryDep";
 import CheckInSummaryChart from "./CheckIns/CheckInSummaryChart";
 import LoginSuperAdmin from "./LoginSuperAdmin";
-
+import EmployeeEvaluations from "./Users/EmployeeEvaluations"; 
+import PermissionManagement from "./Users/PermissionManagement";
+import Permission from "./Users/Permission";
 const App = () => {
   return (
       <Router>
 <Routes>
   {/* ✅ فصل LandingPage عن Layout */}
   <Route path="/" element={<LandingPage />} />
-
+  <Route path="/LSA" element={<LoginSuperAdmin />} />
   <Route path="/" element={<Layout />}>
     <Route path="home" element={<HomePage />} />
     <Route path="users" element={<UserList />} />
@@ -65,10 +67,13 @@ const App = () => {
     <Route path="attendance-reports" element={<AttendanceReportsList />} />
     <Route path="missingcheckouts" element={<MissingCheckoutsPage />} />
     <Route path="CheckInSummaryChart" element={<CheckInSummaryChart />} />
+    <Route path="Evaluations" element={<EmployeeEvaluations />} />
+    <Route path="PermissionManagement" element={<PermissionManagement />} />
+    <Route path="Permission" element={<Permission />} />
+    
   </Route>
   
 
-  <Route path="/LSA" element={<LoginSuperAdmin />} />
   <Route path="/SuperAdmin" element={<CompanyManagement />} />
 </Routes>
 </Router>

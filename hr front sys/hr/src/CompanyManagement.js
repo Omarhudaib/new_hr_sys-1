@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-const API_URL = "https://newhrsys-production.up.railway.app/api/superadmin/companies";
-const CONTACT_API = "https://newhrsys-production.up.railway.app/api/contact";
+import api from "./api";  // Make sure this is imported correctly
 
 const Companies = () => {
   const [companies, setCompanies] = useState([]);
@@ -29,7 +26,7 @@ const Companies = () => {
 
   const fetchCompanies = async () => {
     try {
-      const response = await axios.get(API_URL, {
+      const response = await api.get('/superadmin/companies', {
         headers: {
           Authorization: `Bearer ${superAdminToken}`,
         }
@@ -42,7 +39,7 @@ const Companies = () => {
 
   const fetchContactMessages = async () => {
     try {
-      const response = await axios.get(CONTACT_API, {
+      const response = await api.get("/contact", { // Changed this to use api
         headers: {
           Authorization: `Bearer ${superAdminToken}`,
         },
@@ -82,7 +79,7 @@ const Companies = () => {
     }
 
     try {
-      await axios({
+      await api({
         method,
         url,
         data: formData,
@@ -93,14 +90,13 @@ const Companies = () => {
       console.error(`Error ${method === "post" ? "adding" : "updating"} company`, error.response?.data);
     }
   };
-  // Ensure this is defined before making requests
 
   const handleStore = () => {
     const headers = {
       Authorization: `Bearer ${superAdminToken}`,
     };
   
-    handleSubmit("post", API_URL, formData, headers);
+    handleSubmit("post", api + '/superadmin/companies', formData, headers);  // Use api for the request
     setFormData({
       name: "",
       company_code: "",
@@ -111,7 +107,7 @@ const Companies = () => {
       image_path: null,
     });
   };
-  
+
   const handleUpdate = () => {
     if (!editCompany) return;
   
@@ -119,14 +115,13 @@ const Companies = () => {
       Authorization: `Bearer ${superAdminToken}`,
     };
   
-    handleSubmit("put", `${API_URL}/${editCompany.company_code}`, editCompany, headers);
+    handleSubmit("put", api + `/superadmin/companies/${editCompany.company_code}`, editCompany, headers); // Correct URL format
     setEditCompany(null);
   };
-  
-  
+
   const handleDelete = async (companyCode) => {
     try {
-      await axios.delete(`${API_URL}/${companyCode}`, {
+      await api.delete(`/superadmin/companies/${companyCode}`, {
         headers: {
           Authorization: `Bearer ${superAdminToken}`,
         },
@@ -136,10 +131,10 @@ const Companies = () => {
       console.error("Error deleting company", error.response?.data);
     }
   };
-  
+
   const handleContactFormSubmit = async () => {
     try {
-      await axios.post(CONTACT_API, contactFormData, {
+      await api.post("/superadmin/contact", contactFormData, {  // Correct API endpoint
         headers: {
           Authorization: `Bearer ${superAdminToken}`,
         },
@@ -155,10 +150,10 @@ const Companies = () => {
       console.error("Error submitting contact message", error.response?.data);
     }
   };
-  
+
   const handleReply = async (id, replyMessage) => {
     try {
-      await axios.post(`${CONTACT_API}/${id}/reply`, { message: replyMessage }, {
+      await api.post(`/superadmin/contact/${id}/reply`, { message: replyMessage }, {
         headers: {
           Authorization: `Bearer ${superAdminToken}`,
         },
@@ -168,10 +163,10 @@ const Companies = () => {
       console.error("Error replying to contact message", error.response?.data);
     }
   };
-  
+
   const handleDeleteContactMessage = async (id) => {
     try {
-      await axios.delete(`${CONTACT_API}/${id}`, {
+      await api.delete(`/superadmin/contact/${id}`, {
         headers: {
           Authorization: `Bearer ${superAdminToken}`,
         },

@@ -80,7 +80,10 @@ import {
           text="HR Management"
           collapsed={collapsed}
           links={[
+            { path: "/Permission", label: " Permission" },
             { path: "/users", label: " Users" },
+            { path: "/PermissionManagement", label: "Permission Management" },
+            { path: "/Evaluations", label: " Evaluations" },
             { path: "/users/create", label: " Create User" },
             { path: "/role", label: " Roles" },
           ]}

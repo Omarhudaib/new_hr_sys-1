@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -41,6 +43,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+
     // Relationship with the Company model
     public function company()
     {
@@ -77,6 +80,17 @@ public function salarys()
 {
     return $this->hasOne(Salary::class);
 }
+public function permissions()
+{
+    return $this->belongsToMany(Permission::class, 'user_permissions')
+                ->withTimestamps();
+}
+
+public function hasPermission($permissionName): bool
+{
+    return $this->permissions()->where('name', $permissionName)->exists();
+}
+
 
 
 }
