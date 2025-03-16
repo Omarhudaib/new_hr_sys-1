@@ -6,45 +6,45 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
+
 
 class CheckCompanyMiddleware
 {
-    public function handle(Request $request, Closure $next)
-    {
-        // Extract token from the Authorization header
-        $token = $request->bearerToken();
 
-        if (!$token) {
-            return response()->json(['error' => 'Unauthorized: Missing token'], 401);
-        }
+public function checkCompanyCodeMatch(Request $request, $token)
+{
+    // العثور على التوكن بناءً على القيمة المدخلة
+    $accessToken = PersonalAccessToken::findToken($token);
 
-        // Attempt to authenticate using the token
-        $user = Auth::guard('sanctum')->user();
-
-        if (!$user) {
-            return response()->json(['error' => 'Unauthorized: Invalid token'], 401);
-        }
-
-        // Log authenticated user for debugging
-        Log::info('Authenticated User:', ['user' => $user]);
-
-        // Now we can proceed to check the company code and company ID
-        $companyCode = $request->header('Company-Code');
-        Log::info('Company Code from header:', ['companyCode' => $companyCode]);
-
-        if (!$companyCode) {
-            return response()->json(['error' => 'Unauthorized: Missing Company Code'], 401);
-        }
-
-        // Find the company using the company_code
-        $company = Company::where('company_code', $companyCode)->first();
-
-        if (!$company) {
-            return response()->json(['error' => 'Unauthorized: Invalid Company Code'], 403);
-        }
-
-   
-        return $next($request);
+    if (!$accessToken) {
+        return response()->json(['error' => 'Invalid token'], 401);
     }
+
+    // التحقق إذا كان التوكن مرتبطًا بشركة
+    if ($accessToken->tokenable_type === Company::class) {
+        // الحصول على الشركة المرتبطة بالتوكن
+        $company = $accessToken->tokenable;
+
+        // إرجاع رمز الشركة من التوكن
+        $companyCodeFromToken = $company->company_code;
+
+        // الحصول على company_code من الـ route
+        $routeCompanyCode = $request->route('company_code');
+
+        // التحقق من تطابق company_code من التوكن مع الـ route
+        if ($companyCodeFromToken !== $routeCompanyCode) {
+            return response()->json(['error' => 'Company code mismatch'], 403);
+        }
+
+        // إذا كان الكود متطابقًا، إرجاع استجابة ناجحة
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Company codes match'
+        ], 200);
+    }
+
+    return response()->json(['error' => 'Token does not belong to a company'], 403);
 }
 
+}

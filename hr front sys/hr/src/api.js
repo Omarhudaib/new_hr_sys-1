@@ -8,7 +8,6 @@
     },
   });
   
-  // Add a request interceptor for token handling
   api.interceptors.request.use(
     (config) => {
       const token = localStorage.getItem('authToken'); // أو من الكوكيز

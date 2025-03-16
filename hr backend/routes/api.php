@@ -48,6 +48,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:san
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
+    Route::middleware(['check.company.token'])->group(function () {
     Route::get('permissions', [UserPermissionController::class, 'index']);
     Route::post('assign-permissions/{company_code}', [UserPermissionController::class, 'assignPermissionsToUser']);
 Route::get('/user-permissions/{company_code}', [UserPermissionController::class, 'showUserPermissions']);
@@ -126,7 +127,7 @@ Route::post('/superadmin/companies',[SuperAdminController::class,'storeCompany']
 Route::post('/register', [RegisterController::class, 'register']);
 
 });
-
+});
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware(['check.permission:View_User'])->group(function () {
@@ -147,7 +148,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::middleware(['check.permission:View_Login/Logout_Summary'])->group(function () {
 
-        
+
     });
 
 

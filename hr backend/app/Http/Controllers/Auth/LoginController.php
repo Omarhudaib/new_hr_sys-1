@@ -56,7 +56,6 @@ class LoginController extends Controller
 
 
 
-
     public function loginCompany(Request $request)
     {
         $request->validate([
@@ -64,6 +63,7 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
+        // البحث عن الشركة باستخدام رمز الشركة
         $company = Company::where('company_code', $request->company_code)->first();
 
         if (!$company) {
@@ -73,12 +73,14 @@ class LoginController extends Controller
             ], 404);
         }
 
+        // التحقق من كلمة المرور
         if (Hash::check($request->password, $company->password)) {
 
+            // تخصيص الصلاحيات المقرونة بالشركة (على سبيل المثال: 'company_access')
+            $abilities = ['company_access']; // أو يمكن إضافة صلاحيات متعددة حسب الحاجة
 
-            $token = $company->createToken('Company API Token')->plainTextToken;
-
-
+            // إنشاء التوكن مع الصلاحيات
+            $token = $company->createToken('Company API Token', $abilities)->plainTextToken;
 
             return response()->json([
                 'status' => 'success',
