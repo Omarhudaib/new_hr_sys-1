@@ -16,6 +16,7 @@ use App\Http\Controllers\ContactMeController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\EmployeeEvaluationController;
 use App\Http\Controllers\UserPermissionController;
+use App\Http\Controllers\UsersPermissionsController;
 
 
 Route::post('/contact', [ContactMeController::class, 'store']);
@@ -127,6 +128,27 @@ Route::post('/register', [RegisterController::class, 'register']);
 });
 
 
-Route::middleware(['auth:sanctum', 'check.permission:Add_User'])->get('/dsgsggdf', function () {
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::middleware(['check.permission:View_User'])->group(function () {
+        Route::get('/user/usersc/{company_code}', [UsersPermissionsController::class, 'index']);
+        Route::get('/user/users/{company_code}/{id}', [UsersPermissionsController::class, 'show']);
+    });
+    Route::middleware(['check.permission:Edit_User'])->group(function () {
+        Route::get('/user/role/{companyCode}', [UsersPermissionsController::class, 'indexRole']);
+        Route::post('/user/users/update/{company_code}', [UsersPermissionsController::class, 'update']);
+        Route::get('/user/departments/{companyCode}', [UsersPermissionsController::class, 'indexDepartments']);
+    });
+
+    Route::middleware(['check.permission:Add_User'])->group(function () {
+        Route::post('/user/users/{company_code}', [UsersPermissionsController::class, 'store']);
+        Route::get('/user/departments/{companyCode}', [UsersPermissionsController::class, 'indexDepartments']);
+        Route::get('/user/role/{companyCode}', [UsersPermissionsController::class, 'indexRole']);
+    });
+
+    Route::middleware(['check.permission:View_Login/Logout_Summary'])->group(function () {
+
+        
+    });
+
 
 });

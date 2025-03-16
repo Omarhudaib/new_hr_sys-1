@@ -74,7 +74,7 @@ class Kernel extends HttpKernel
         'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         'check.company' => \App\Http\Middleware\CheckCompanyMiddleware::class,
         'super-admin' => \App\Http\Middleware\SuperAdminMiddleware::class,
-        'permission' => \App\Http\Middleware\CheckPermission::class,
+        'check.permission' => \App\Http\Middleware\CheckPermission::class,
     ];
 
 }

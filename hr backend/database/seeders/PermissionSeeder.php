@@ -18,6 +18,9 @@ class PermissionSeeder extends Seeder
             ['name' => 'View_Login/Logout_Summary', 'description' => 'Permission to view login/logout summary'],
             ['name' => 'Approve_Employee_Requests', 'description' => 'Permission to approve employee requests'],
             ['name' => 'Edit_Employee_Requests', 'description' => 'Permission to edit employee requests'],
+            ['name' => 'View_User', 'description' => 'Permission to view users'],
+            ['name' => 'View_Rating', 'description' => 'Permission to view users rating'],
+
         ];
 
         foreach ($permissions as $permission) {
