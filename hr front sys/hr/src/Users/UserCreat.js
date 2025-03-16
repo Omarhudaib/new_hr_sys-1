@@ -381,7 +381,7 @@ const UserForm = () => {
   
         {/* Submit Button */}
         <div className="row">
-          <div className="col-12 d-flex justify-content-end">
+          <div className="content-center col-12 d-flex justify-content-center">
             <button type="submit" className="btn btn-primary">
               {id ? 'Update User' : 'Create User'}
             </button>

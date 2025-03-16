@@ -50,10 +50,22 @@
 }
 
 @media (max-width: 768px) {
-  .hero-section {
-    min-height: 80vh;
+  .p-3.text-white.shadow-lg.min-vh-100.bg-primary {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    z-index: 1000;
+    transition: left 0.3s ease;
   }
-  .parallax-background {
-    background-attachment: scroll;
+}
+
+@media (max-width: 768px) {
+  .p-3.text-white.shadow-lg.min-vh-100.bg-primary.active {
+    transform: translateX(0);
+  }
+  .p-3.text-white.shadow-lg.min-vh-100.bg-primary {
+    transform: translateX(-100%);
   }
 }

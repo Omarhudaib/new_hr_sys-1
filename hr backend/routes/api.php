@@ -14,11 +14,19 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceReportController;
 use App\Http\Controllers\ContactMeController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\EmployeeEvaluationController;
+use App\Http\Controllers\UserPermissionController;
+use App\Http\Controllers\UsersPermissionsController;
+
 
 Route::post('/contact', [ContactMeController::class, 'store']);
 Route::post('/super-admin/login', [LoginController::class, 'loginSuperAdmin']);
 Route::post('/login', [LoginController::class, 'loginCompany']);
 Route::post('/user-login',[LoginController::class,'loginUser']);
+
+
+
+
 
 
 
@@ -39,6 +47,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum'); // Logout route with Sanctum auth middleware
 
 Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::get('permissions', [UserPermissionController::class, 'index']);
+    Route::post('assign-permissions/{company_code}', [UserPermissionController::class, 'assignPermissionsToUser']);
+Route::get('/user-permissions/{company_code}', [UserPermissionController::class, 'showUserPermissions']);
+    Route::put('update-permissions/{company_code}', [UserPermissionController::class, 'updateUserPermissions']);
+
     Route::get('/usersc/{company_code}', [UserController::class, 'index']);
     Route::get('/users/{company_code}/{id}', [UserController::class, 'show']);
     Route::post('/users/{company_code}', [UserController::class, 'store']);
@@ -94,7 +108,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/company/{companyCode}', [CompanyController::class, 'index']);
     Route::put('/company/{companyCode}', [CompanyController::class, 'update']);
     Route::get('/missing-checkouts/{company_code}', [CheckInsController::class, 'getMissingCheckOuts']);
-
+    Route::get('employee-evaluations/{companyCode}', [EmployeeEvaluationController::class, 'index']);
+    Route::post('employee-evaluations/{companyCode}', [EmployeeEvaluationController::class, 'store']);
+    Route::put('employee-evaluations/{id}', [EmployeeEvaluationController::class, 'update']);
 });
 
 
@@ -108,4 +124,31 @@ Route::get('/superadmin/companies',[SuperAdminController::class,'indexCompany'])
 Route::put('/superadmin/companies',[SuperAdminController::class,'updateCompany']);
 Route::post('/superadmin/companies',[SuperAdminController::class,'storeCompany']);
 Route::post('/register', [RegisterController::class, 'register']);
+
+});
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::middleware(['check.permission:View_User'])->group(function () {
+        Route::get('/user/usersc/{company_code}', [UsersPermissionsController::class, 'index']);
+        Route::get('/user/users/{company_code}/{id}', [UsersPermissionsController::class, 'show']);
+    });
+    Route::middleware(['check.permission:Edit_User'])->group(function () {
+        Route::get('/user/role/{companyCode}', [UsersPermissionsController::class, 'indexRole']);
+        Route::post('/user/users/update/{company_code}', [UsersPermissionsController::class, 'update']);
+        Route::get('/user/departments/{companyCode}', [UsersPermissionsController::class, 'indexDepartments']);
+    });
+
+    Route::middleware(['check.permission:Add_User'])->group(function () {
+        Route::post('/user/users/{company_code}', [UsersPermissionsController::class, 'store']);
+        Route::get('/user/departments/{companyCode}', [UsersPermissionsController::class, 'indexDepartments']);
+        Route::get('/user/role/{companyCode}', [UsersPermissionsController::class, 'indexRole']);
+    });
+
+    Route::middleware(['check.permission:View_Login/Logout_Summary'])->group(function () {
+
+        
+    });
+
+
 });

@@ -62,64 +62,68 @@ const EditCompanyPage = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center text-primary mb-4">Edit Company</h2>
-      {error && <div className="alert alert-danger text-center">{error}</div>}
+      <h2 className="mb-4 text-center text-primary">Edit Company</h2>
+      {error && <div className="text-center alert alert-danger">{error}</div>}
 
-      <form onSubmit={handleSubmit} className="row g-3">
-        <div className="col-md-6">
-          <label htmlFor="name" className="form-label fw-bold">Company Name</label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
+      <div className="p-4 card">
+        <form onSubmit={handleSubmit} className="row g-3">
+          {/* First Form (Company Name + Image URL) */}
+          <div className="col-md-6">
+            <label htmlFor="name" className="form-label fw-bold">Company Name</label>
+            <input
+              type="text"
+              className="form-control"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <div className="col-md-6">
-          <label htmlFor="image_path" className="form-label fw-bold">Image URL</label>
-          <input
-            type="text"
-            className="form-control"
-            id="image_path"
-            name="image_path"
-            value={formData.image_path}
-            onChange={handleChange}
-          />
-        </div>
+          <div className="col-md-6">
+            <label htmlFor="image_path" className="form-label fw-bold">Image URL</label>
+            <input
+              type="text"
+              className="form-control"
+              id="image_path"
+              name="image_path"
+              value={formData.image_path}
+              onChange={handleChange}
+            />
+          </div>
 
-        <div className="col-md-12">
-          <label htmlFor="additional_information" className="form-label fw-bold">Additional Information</label>
-          <textarea
-            className="form-control"
-            id="additional_information"
-            name="additional_information"
-            value={formData.additional_information}
-            onChange={handleChange}
-            rows="3"
-          />
-        </div>
+          {/* Second Form (Additional Info + New Password) */}
+          <div className="col-md-6">
+            <label htmlFor="additional_information" className="form-label fw-bold">Additional Information</label>
+            <textarea
+              className="form-control"
+              id="additional_information"
+              name="additional_information"
+              value={formData.additional_information}
+              onChange={handleChange}
+              rows="3"
+            />
+          </div>
 
-        <div className="col-md-6">
-          <label htmlFor="password" className="form-label fw-bold">New Password</label>
-          <input
-            type="password"
-            className="form-control"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
+          <div className="col-md-6">
+            <label htmlFor="password" className="form-label fw-bold">New Password</label>
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+          </div>
 
-        <div className="col-12 d-flex justify-content-center gap-3 mt-3">
-          <button type="submit" className="btn btn-primary px-4">Save Changes</button>
-        
-        </div>
-      </form>
+          {/* Submit Button */}
+          <div className="gap-3 mt-3 col-12 d-flex justify-content-center">
+            <button type="submit" className="px-4 btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -183,10 +183,7 @@ const handleSettingsSubmit = async (e) => {
             </Col>
           </Form>
         </Col>
-      </Row>
 
-      {/* Company Settings Form */}
-      <Row>
         <Col>
           <h3 className="mb-3 text-center text-secondary">Company Settings</h3>
           {settingsError && <div className="text-center alert alert-danger">{settingsError}</div>}

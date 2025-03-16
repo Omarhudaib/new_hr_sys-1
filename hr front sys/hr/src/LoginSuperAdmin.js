@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from './api';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -19,7 +19,7 @@ const Login = () => {
 
     try {
       // Send a POST request to the Laravel login endpoint
-      const response = await axios.post('https://newhrsys-production.up.railway.app/api/super-admin/login', data);
+      const response = await api.post('/super-admin/login', data);
 
       // If successful, store the token in localStorage or state
       localStorage.setItem('superAdminToken', response.data.token);

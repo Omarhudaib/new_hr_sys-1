@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import api from '../api';
 import LoadingSpinner from '../LoadingSpinner'; // Import the LoadingSpinner component
 import UserImage from '../user.jpg'; 
+
 const UserDetail = () => {
   const { id } = useParams(); // User ID from the URL
   const [user, setUser] = useState(null);
@@ -10,6 +11,7 @@ const UserDetail = () => {
 
   // Get companyCode from localStorage or any other context
   const companyCode = JSON.parse(localStorage.getItem('company'))?.company_code;
+  const permissions = JSON.parse(localStorage.getItem('permissions')) ; // Get stored permissions
 
   useEffect(() => {
     if (!companyCode) {
@@ -18,8 +20,10 @@ const UserDetail = () => {
       return;
     }
 
-    // API request with both companyCode and user ID
-    api.get(`/users/${companyCode}/${id}`)
+    // API request with both companyCode and user ID, including permissions in headers
+    api.get(`/users/${companyCode}/${id}`, {
+      headers: { 'User-Permissions': JSON.stringify(permissions) } // Send permissions in headers
+    })
       .then(response => {
         setUser(response.data);
         setLoading(false);
@@ -28,7 +32,7 @@ const UserDetail = () => {
         console.error('Error fetching user details:', error.response ? error.response.data : error.message);
         setLoading(false);
       });
-  }, [companyCode, id]); // Re-fetch when companyCode or id changes
+  }, [companyCode, id, permissions]); // Re-fetch when companyCode, id, or permissions changes
 
   if (loading) {
     return <LoadingSpinner />; // Show custom loading spinner while fetching data
@@ -36,7 +40,7 @@ const UserDetail = () => {
 
   if (!user) {
     return (
-      <div className="container mt-5 text-center">
+      <div className="container mt-1 text-center">
         <h3>User not found</h3>
         <p>404 - The requested user does not exist.</p>
       </div>
@@ -109,7 +113,7 @@ const UserDetail = () => {
 
             {/* Additional Information Section */}
             <div className="col-md-12">
-              <ul className=" list-group list-group-flush">
+              <ul className="list-group list-group-flush">
                 <li className="list-group-item d-flex justify-content-between align-items-center">
                   <strong>National ID:</strong>
                   <span>{user.national_id || 'N/A'}</span>
