@@ -7,6 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Permission;
 use Illuminate\Support\Facades\Log;
+use App\Models\DepartmentAdmin;
+use Illuminate\Support\Facades\Validator;
+
 class UserPermissionController extends Controller
 {
     public function index()
@@ -140,4 +143,143 @@ public function showUserPermissions($company_code)
 
         return response()->json(['message' => 'Permissions updated successfully'], 200);
     }
-}
+
+
+    public function addDepartmentAdmin(Request $request, $company_code)
+    {
+        // التحقق من البيانات القادمة باستخدام Validator
+        Log::info('Validating data for addDepartmentAdmin', ['request' => $request->all()]);
+
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'department_id' => 'required|exists:departments,id',
+        ]);
+
+        // إذا كانت هناك أخطاء في التحقق من البيانات
+        if ($validator->fails()) {
+            Log::error('Validation failed', ['errors' => $validator->errors()]);
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        // استرجاع الشركة باستخدام company_code
+        Log::info('Retrieving company by company_code', ['company_code' => $company_code]);
+        $company = Company::where('company_code', $company_code)->first();
+
+        // Check if the company was found
+        if (!$company) {
+            Log::error('Company not found', ['company_code' => $company_code]);
+            return response()->json([
+                'message' => 'Company not found'
+            ], 404);
+        }
+
+        // استدعاء دالة إضافة DepartmentAdmin من موديل Company
+        Log::info('Attempting to add Department Admin', [
+            'user_id' => $request->user_id,
+            'department_id' => $request->department_id,
+            'company_id' => $company->id
+        ]);
+
+        $result = $company->addDepartmentAdmin($request->user_id, $request->department_id);
+
+        // التحقق من نجاح إضافة الـ DepartmentAdmin
+        if ($result) {
+            Log::info('Successfully added Department Admin', ['result' => $result]);
+            return response()->json([
+                'message' => 'Department Admin added successfully',
+                'data' => $result
+            ], 201); // 201 Created
+        }
+
+        Log::error('Failed to add Department Admin', [
+            'user_id' => $request->user_id,
+            'department_id' => $request->department_id,
+            'company_id' => $company->id
+        ]);
+
+        return response()->json([
+            'message' => 'Failed to add Department Admin. Ensure the user and department belong to the same company.'
+        ], 400); // 400 Bad Request
+    }
+
+        // عرض جميع الـ DepartmentAdmins في الشركة
+        public function showDepartmentAdmins($company_code)
+        {
+            $company = Company::where('company_code', $company_code)->firstOrFail();
+
+            $departmentAdmins = $company->departmentAdmins; // الحصول على جميع DepartmentAdmins
+
+            return response()->json([
+                'message' => 'Department Admins retrieved successfully',
+                'data' => $departmentAdmins
+            ], 200);
+        }
+
+        // تعديل Department Admin
+        public function updateDepartmentAdmin(Request $request, $company_code, $adminId)
+        {
+            // التحقق من البيانات القادمة باستخدام Validator
+            $validator = Validator::make($request->all(), [
+                'user_id' => 'required|exists:users,id',
+                'department_id' => 'required|exists:departments,id',
+            ]);
+
+            // إذا كانت هناك أخطاء في التحقق من البيانات
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], 400);
+            }
+
+            // استرجاع الشركة باستخدام company_code
+            $company = Company::where('company_code', $company_code)->firstOrFail();
+
+            // استرجاع الـ DepartmentAdmin
+            $departmentAdmin = DepartmentAdmin::find($adminId);
+
+            if (!$departmentAdmin || $departmentAdmin->company_id != $company->id) {
+                return response()->json([
+                    'message' => 'Department Admin not found or does not belong to this company'
+                ], 404);
+            }
+
+            // تحديث الـ DepartmentAdmin
+            $departmentAdmin->user_id = $request->user_id;
+            $departmentAdmin->department_id = $request->department_id;
+            $departmentAdmin->save();
+
+            return response()->json([
+                'message' => 'Department Admin updated successfully',
+                'data' => $departmentAdmin
+            ], 200);
+        }
+
+        // حذف Department Admin
+        public function deleteDepartmentAdmin($company_code, $adminId)
+        {
+            // استرجاع الشركة باستخدام company_code
+            $company = Company::where('company_code', $company_code)->firstOrFail();
+
+            // استرجاع الـ DepartmentAdmin
+            $departmentAdmin = DepartmentAdmin::find($adminId);
+
+            if (!$departmentAdmin || $departmentAdmin->company_id != $company->id) {
+                return response()->json([
+                    'message' => 'Department Admin not found or does not belong to this company'
+                ], 404);
+            }
+
+            // حذف الـ DepartmentAdmin
+            $departmentAdmin->delete();
+
+            return response()->json([
+                'message' => 'Department Admin deleted successfully'
+            ], 200);
+        }
+    }
+
+

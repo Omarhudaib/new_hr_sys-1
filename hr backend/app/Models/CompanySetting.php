@@ -9,7 +9,7 @@ class CompanySetting extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['company_id', 'overtime_rate', 'overtime_enabled','work_hours' ,'style'];
+    protected $fillable = ['company_id', 'overtime_rate', 'overtime_enabled', 'work_hours', 'style', 'frequency'];
 
     public function company()
     {

@@ -25,6 +25,7 @@ const CompanyManagementPage = () => {
     overtime_enabled: false,
     hourly_rate: '',
     style: 'default',
+    frequency: 'daily',
   });
   const [settingsError, setSettingsError] = useState('');
   const [isSettingsLoading, setIsSettingsLoading] = useState(true);
@@ -215,7 +216,21 @@ const handleSettingsSubmit = async (e) => {
             </Row>
 
             <Row className="mt-2 g-3">
-              <Col md={6}>
+            <Col md={3}>
+              <Form.Group>
+                <Form.Label>Frequency</Form.Label>
+                <Form.Select
+                  name="frequency"
+                  value={settings.frequency}
+                  onChange={handleSettingsChange}
+                >
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+              <Col md={3}>
                 <Form.Group>
                   <Form.Label>Style</Form.Label>
                   <Form.Select

@@ -16,5 +16,12 @@ class Department extends Model
     {
         return $this->belongsTo(Company::class); // Each department belongs to a company
     }
+    // In Department model (app/Models/Department.php)
+
+public function admins()
+{
+    return $this->hasMany(DepartmentAdmin::class);
+}
+
 }
 

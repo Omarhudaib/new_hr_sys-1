@@ -32,6 +32,9 @@ import LoginSuperAdmin from "./LoginSuperAdmin";
 import EmployeeEvaluations from "./Users/EmployeeEvaluations"; 
 import PermissionManagement from "./Users/PermissionManagement";
 import Permission from "./Users/Permission";
+import DepartmentAdmin from "./Users/DepartmentAdmin";
+
+
 const App = () => {
   return (
       <Router>
@@ -70,6 +73,7 @@ const App = () => {
     <Route path="Evaluations" element={<EmployeeEvaluations />} />
     <Route path="PermissionManagement" element={<PermissionManagement />} />
     <Route path="Permission" element={<Permission />} />
+    <Route path="DepartmentAdmin" element={<DepartmentAdmin/>} />
     
   </Route>
   

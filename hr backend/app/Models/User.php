@@ -60,6 +60,16 @@ class User extends Authenticatable
     }
 
 
+    public function admins()
+    {
+        return $this->belongsToMany(User::class, 'department_admins', 'user_id', 'department_id')
+                    ->wherePivot('company_id', $this->company_id); // استخدم wherePivot بدلاً من where لتحديد الشركة بناءً على الـ pivot table
+    }
+
+    public function departments(): BelongsToMany
+    {
+        return $this->belongsToMany(Department::class, 'department_admins', 'user_id', 'department_id');
+    }
     // Relationship with the Department model
     public function department()
     {
@@ -91,6 +101,9 @@ public function hasPermission($permissionName): bool
     return $this->permissions()->where('name', $permissionName)->exists();
 }
 
-
+public function evaluations()
+{
+    return $this->hasMany(EmployeeEvaluation::class, 'user_id');
+}
 
 }

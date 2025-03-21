@@ -54,6 +54,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::get('/user-permissions/{company_code}', [UserPermissionController::class, 'showUserPermissions']);
     Route::put('update-permissions/{company_code}', [UserPermissionController::class, 'updateUserPermissions']);
 
+
+    Route::post('company/{company_code}/add-department-admin', [UserPermissionController::class, 'addDepartmentAdmin']);
+    Route::get('company/{company_code}/department-admins', [UserPermissionController::class, 'showDepartmentAdmins']);
+    Route::put('company/{company_code}/department-admin/{adminId}', [UserPermissionController::class, 'updateDepartmentAdmin']);
+    Route::delete('company/{company_code}/department-admin/{adminId}', [UserPermissionController::class, 'deleteDepartmentAdmin']);
+
+
+
+
+
+
     Route::get('/usersc/{company_code}', [UserController::class, 'index']);
     Route::get('/users/{company_code}/{id}', [UserController::class, 'show']);
     Route::post('/users/{company_code}', [UserController::class, 'store']);
@@ -148,8 +159,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::middleware(['check.permission:View_Login/Logout_Summary'])->group(function () {
 
+        Route::post('/user/evaluat/{company_code}', [UsersPermissionsController::class, 'storeEvaluat']);
+        Route::get('/users/evaluat/{department_id}/{companyCode}', [UsersPermissionsController::class, 'getUsersForEvaluation']);
+        Route::get('/users/evaluat', [UsersPermissionsController::class, 'getEvaluationData']);
+        Route::post('/evaluations/{companyCode}', [UsersPermissionsController::class, 'storeEvaluation']);
 
+        Route::get('/users/evaluat', [UsersPermissionsController::class, 'getUsersForEvaluation']);
+        Route::get('/company/settings/{companyCode}', [UsersPermissionsController::class, 'showCom']);
     });
+
 
 
 });

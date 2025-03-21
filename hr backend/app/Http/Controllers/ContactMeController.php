@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ReplyEmail;
 use App\Models\ContactMe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -45,7 +46,6 @@ class ContactMeController extends Controller
         return response()->json($message);
     }
 
-    // ✅ إرسال رد عبر البريد الإلكتروني وتحديث `is_replied`
     public function reply(Request $request, $id)
     {
         $message = ContactMe::findOrFail($id);
@@ -54,18 +54,18 @@ class ContactMeController extends Controller
             'reply' => 'required|string',
         ]);
 
-        // إرسال البريد الإلكتروني
-        Mail::raw($data['reply'], function ($mail) use ($message) {
-            $mail->to($message->email)
-                ->subject('Reply to your inquiry')
-                ->from('admin@example.com');
-        });
+        // Get the count of unread contact messages (or adjust according to your requirements)
+        $unreadMessageCount = ContactMe::where('is_replied', false)->count();
 
-        // تحديث حالة الرد
+        // Send email with the unread message count included
+        Mail::to($message->email)->send(new ReplyEmail($data['reply'], $unreadMessageCount));
+
+        // Update the message status to indicate that it's been replied to
         $message->update(['is_replied' => true]);
 
         return response()->json(['message' => 'Reply sent successfully!']);
     }
+
 
     // ✅ حذف رسالة معينة
     public function destroy($id)

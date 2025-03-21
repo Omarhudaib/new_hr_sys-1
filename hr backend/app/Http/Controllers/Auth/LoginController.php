@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Company;
 use App\Models\SuperAdmin;
+use App\Models\DepartmentAdmin;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,13 +16,13 @@ use Illuminate\Support\Facades\Log;
 class LoginController extends Controller
 {public function loginUser(Request $request)
     {
-        // التحقق من المدخلات
+        // Validate input
         $request->validate([
             'user_code' => 'required',
             'password' => 'required',
         ]);
 
-        // البحث عن المستخدم بواسطة user_code
+        // Find user by user_code
         $user = User::where('user_code', $request->user_code)->first();
 
         if (!$user) {
@@ -31,7 +32,7 @@ class LoginController extends Controller
             ], 404);
         }
 
-        // التحقق من كلمة المرور
+        // Validate password
         if (!Hash::check($request->password, $user->password)) {
             return response()->json([
                 'status' => 'error',
@@ -39,10 +40,20 @@ class LoginController extends Controller
             ], 401);
         }
 
-        // **جلب الصلاحيات من العلاقة `permissions`**
+        // Fetch permissions
         $abilities = $user->permissions()->pluck('name')->toArray();
 
-        // **إنشاء التوكن مع تخزين الصلاحيات داخل `abilities`**
+        // **Check if user is a department admin**
+        $isDepartmentAdmin = DepartmentAdmin::where('user_id', $user->id)->exists();
+
+        // **Get all departments the user is admin for**
+        $adminDepartments = DepartmentAdmin::where('user_id', $user->id)
+        ->join('departments', 'departments.id', '=', 'department_admins.department_id')
+        ->select('departments.id', 'departments.dep_name') // ✅ Fetch department name
+        ->get();
+
+
+        // Generate API Token
         $token = $user->createToken('User API Token', $abilities)->plainTextToken;
 
         return response()->json([
@@ -50,9 +61,12 @@ class LoginController extends Controller
             'message' => 'User login successful.',
             'user' => $user,
             'token' => $token,
-            'permissions' => $abilities, // إرسال الصلاحيات إلى الفرونت
+            'permissions' => $abilities,
+            'is_department_admin' => $isDepartmentAdmin, // ✅ Send admin status
+            'admin_departments' => $adminDepartments, // ✅ Send departments user is admin for
         ], 200);
     }
+
 
 
 

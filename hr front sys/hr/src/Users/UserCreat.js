@@ -39,7 +39,7 @@ const UserForm = () => {
     if (companyData && companyData.id) {
       setFormData((prev) => ({ ...prev, company_id: companyData.id }));
     } else {
-      navigate('/login');
+      navigate('/home');
     }
   }, [navigate]);
   useEffect(() => {
@@ -69,6 +69,7 @@ const UserForm = () => {
         try {
           const response = await api.get(`/users/${companyCode}/${id}`);
           setFormData(response.data);
+          window.relode()
         } catch (error) {
           console.error('Error fetching user data:', error);
         }

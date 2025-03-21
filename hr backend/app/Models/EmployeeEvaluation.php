@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class EmployeeEvaluation extends Model
 {
     use HasFactory;
-
+    protected $table = 'employee_evaluations';
     protected $fillable = ['user_id', 'department_id', 'company_id', 'rating', 'comments', 'evaluated_by', 'evaluation_date'];
 
     public function user() {
@@ -26,4 +26,5 @@ class EmployeeEvaluation extends Model
     public function evaluator() {
         return $this->belongsTo(User::class, 'evaluated_by');
     }
+
 }
