@@ -3,13 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { useSpring, animated } from 'react-spring';
 import {  Container, Row, Col, Navbar, Nav } from 'react-bootstrap';
 import api from './api';
-import { FaMobileAlt,  FaCalendarCheck, FaClock, FaFileAlt, FaUsers, FaDownload } from 'react-icons/fa';
+import { FaMobileAlt,  FaCalendarCheck, FaClock, FaFileAlt, FaUsers, FaDownload ,FaInstagram, FaFacebook, FaEnvelope } from 'react-icons/fa';
 import './LandingPage.css';
 import bg7 from './images/7.jpg';
 import bg9 from './images/13.jpg';
 import authorImg from './images/11.jpg';
 import { motion } from 'framer-motion';
-
+import img1 from './images/1.jpg';
+import img2 from './images/2.jpg';
+import img3 from './images/3.jpg';
+import img4 from './images/4.jpg';
+import img5 from './images/5.jpg';
+import img6 from './images/6.jpg'
 const LandingPage = () => {
   const fadeIn = useSpring({
     from: { opacity: 0 },
@@ -71,26 +76,31 @@ const LandingPage = () => {
   {/* Modern Navbar */}
   <Navbar expand="lg" fixed="top" className="navbar-custom">
   <Container>
-    <Navbar.Brand href="#" className="fw-bold" style={{ borderColor: '#000000', textShadow: '3px 3px 12px rgba(0, 0, 0, 1)' }}>
-      Dawam
-    </Navbar.Brand>
-    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-    <Navbar.Collapse id="basic-navbar-nav">
-      <Nav className="ms-auto">
-        <Nav.Link href="#features" className="mx-3 fw-bold" style={{ borderColor: '#000000', textShadow: '3px 3px 12px rgba(0, 0, 0, 1)' }}>
-          Features
-        </Nav.Link>
-        <Nav.Link href="#about" className="mx-3 fw-bold" style={{ borderColor: '#000000', textShadow: '3px 3px 12px rgba(0, 0, 0, 1)' }}>
-          About
-        </Nav.Link>
-        <Nav.Link href="#contact" className="mx-3 fw-bold" style={{ borderColor: '#000000', textShadow: '3px 3px 12px rgba(0, 0, 0, 1)' }}>
-          Contact
-        </Nav.Link>
-        <Nav.Link href="/dawam.apk" download="DAWAM.apk" style={{ borderColor: '#000000', textShadow: '3px 3px 12px rgba(0, 0, 0, 1)' }}>
-          Download APK
-        </Nav.Link>
-      </Nav>
-    </Navbar.Collapse>
+  <Navbar.Brand href="#" className="fw-bold text-shadow-custom">
+  Dawam
+</Navbar.Brand>
+<Navbar.Toggle aria-controls="basic-navbar-nav" />
+<Navbar.Collapse id="basic-navbar-nav">
+  <Nav className="ms-auto">
+    <Nav.Link href="#features" className="mx-3 fw-bold text-shadow-custom">
+      Features
+    </Nav.Link>
+    <Nav.Link href="#about" className="mx-3 fw-bold text-shadow-custom">
+      About
+    </Nav.Link>
+    <Nav.Link href="#image-gallery" className="mx-3 fw-bold text-shadow-custom">
+    Gallery
+    </Nav.Link>
+    <Nav.Link href="#contact" className="mx-3 fw-bold text-shadow-custom">
+      Contact
+    </Nav.Link>
+    <Nav.Link href="/dawam.apk" download="DAWAM.apk" className="text-shadow-custom">
+      Download APK
+    </Nav.Link>
+  </Nav>
+</Navbar.Collapse>
+
+   
   </Container>
 </Navbar>
 
@@ -262,7 +272,7 @@ const LandingPage = () => {
       </section>
 
 {/* About Section */}
-<section id="about" className="py-5 mb-5 bg-gray-400" style={{ minHeight: '90vh' }}>
+<section id="about" className="bg-gray-400 " style={{ minHeight: '90vh' }}>
   <Container>
     <motion.div
       initial={{ opacity: 0 }}
@@ -291,10 +301,47 @@ const LandingPage = () => {
   </Container>
 </section>
 
-{/* Contact Section */}
+<section id="image-gallery" className="bg-gray-400 custom-gallery-section" style={{ minHeight: '90vh' }}>
+  <Container>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="text-center custom-gallery-content"
+    >
+      <h2 className="mb-5 display-4 custom-gallery-title">
+        Our Gallery
+      </h2>
+
+      <div className="row custom-gallery-row">
+        <div className="mb-4 col-md-4 custom-gallery-item">
+          <img src={img1} alt="Image 1" className="rounded img-fluid custom-gallery-img" />
+        </div>
+        <div className="mb-4 col-md-4 custom-gallery-item">
+          <img src={img2} alt="Image 2" className="rounded img-fluid custom-gallery-img" />
+        </div>
+        <div className="mb-4 col-md-4 custom-gallery-item">
+          <img src={img3} alt="Image 3" className="rounded img-fluid custom-gallery-img" />
+        </div>
+      </div>
+
+      <div className="row custom-gallery-row">
+        <div className="mb-4 col-md-4 custom-gallery-item">
+          <img src={img4} alt="Image 4" className="rounded img-fluid custom-gallery-img" />
+        </div>
+        <div className="mb-4 col-md-4 custom-gallery-item">
+          <img src={img5} alt="Image 5" className="rounded img-fluid custom-gallery-img" />
+        </div>
+        <div className="mb-4 col-md-4 custom-gallery-item">
+          <img src={img6} alt="Image 6" className="rounded img-fluid custom-gallery-img" />
+        </div>
+      </div>
+    </motion.div>
+  </Container>
+</section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-5 mt-5" style={{ background: `url(${authorImg}) no-repeat center center/cover`, color: 'white' }}>
+      <section id="contact" className="py-5 " style={{ background: `url(${authorImg}) no-repeat center center/cover`, color: 'white' }}>
         <Container>
           <Row className="mt-5 g-5 align-items-center">
             <motion.div initial={{ x: -50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} className="p-4 shadow rounded-3" style={{ background: 'rgba(0, 0, 0, 0.6)', maxWidth: '800px', margin: '0 auto', borderRadius: '10px', padding: '20px' }}>
@@ -379,7 +426,27 @@ const LandingPage = () => {
           </Row>
         </Container>
       </section>
-    </animated.div>
+    
+      <footer className="footer">
+
+        <div className="links">
+          <a href="https://www.instagram.com/dawam.jo/" target="_blank" rel="noopener noreferrer" className="link">
+            <FaInstagram style={{ marginRight: '8px' }} /> Instagram
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61574071978343" target="_blank" rel="noopener noreferrer" className="link">
+            <FaFacebook style={{ marginRight: '8px' }} /> Facebook
+          </a>
+          <a href="mailto:omarhudaib.it@gmail.com" className="link">
+            <FaEnvelope style={{ marginRight: '8px' }} /> omarhudaib.it@gmail.com
+          </a>
+          <a href="mailto:jodawam@gmail.com" className="link">
+            <FaEnvelope style={{ marginRight: '8px' }} /> jodawam@gmail.com
+          </a>
+        </div>
+
+    </footer>
+</animated.div>
+
   );
 };
 

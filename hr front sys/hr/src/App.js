@@ -37,7 +37,7 @@ import DepartmentAdmin from "./Users/DepartmentAdmin";
 
 const App = () => {
   return (
-      <Router>
+ 
 <Routes>
   {/* ✅ فصل LandingPage عن Layout */}
   <Route path="/" element={<LandingPage />} />
@@ -80,7 +80,7 @@ const App = () => {
 
   <Route path="/SuperAdmin" element={<CompanyManagement />} />
 </Routes>
-</Router>
+
   );
 };
 

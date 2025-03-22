@@ -1,10 +1,12 @@
-
+/* Hero Section and Author Section */
 .hero-section, .author-section {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
   display: flex;
   align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .parallax-background {
@@ -15,40 +17,104 @@
   background-size: cover;
   background-position: center;
   z-index: -1;
+  transition: transform 0.5s ease-out;
+}
+
+/* Parallax Effect on Scroll */
+.hero-section:hover .parallax-background {
+  transform: scale(1.05);
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
-  text-shadow: none;
+  text-shadow: 0 4px 10px rgba(255, 255, 255, 0.6);
+  text-align: center;
+  color: #fff;
+  transition: opacity 0.3s ease;
 }
 
-.gallery-item {
-  perspective: 1500px;
+.hero-content h1, .hero-content p {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
 }
 
-.gallery-img {
-  border-radius: 12px;
-  overflow: hidden;
+.hero-content h1 {
+  animation-delay: 0.3s;
 }
 
-.hover_to-black {
-  position: relative;
+.hero-content p {
+  animation-delay: 0.5s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-button {
   padding: 14px 36px;
   border-radius: 30px;
   font-weight: 600;
+
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.hero-button:hover {
+
+  transform: scale(1.05);
 }
 
 .form-control {
   border: none;
   border-radius: 10px;
   padding: 14px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: background-color 0.3s ease;
 }
 
+.form-control:focus {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Gallery Item */
+.gallery-item {
+  perspective: 1500px;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: scale(1.05);
+}
+
+.gallery-img {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-img {
+  transform: scale(1.05);
+}
+
+.hover_to-black {
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.hover_to-black:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Sidebar for smaller screens */
 @media (max-width: 768px) {
   .p-3.text-white.shadow-lg.min-vh-100.bg-primary {
     position: fixed;
@@ -57,15 +123,403 @@
     bottom: 0;
     width: 250px;
     z-index: 1000;
-    transition: left 0.3s ease;
+    transition: transform 0.3s ease;
   }
-}
 
-@media (max-width: 768px) {
   .p-3.text-white.shadow-lg.min-vh-100.bg-primary.active {
     transform: translateX(0);
   }
+
   .p-3.text-white.shadow-lg.min-vh-100.bg-primary {
     transform: translateX(-100%);
   }
 }
+
+/* Footer Styles */
+.footer {
+  background-color: #333;
+  color: #fff;
+  padding: 40px 20px;
+  text-align: center;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.footer:hover {
+  background-color: #444;
+}
+
+.footer .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer .links {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer .links:hover {
+  transform: translateY(-5px);
+}
+
+.footer .link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.footer .link:hover {
+
+  transform: scale(1.1);
+}
+
+/* Footer Connect Section */
+.footer .connect {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #444;
+}
+
+.footer .connect h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.footer .connect p {
+  font-size: 14px;
+  color: #bbb;
+}
+
+.footer .connect:hover h3 {
+  transform: translateX(5px);
+}
+
+/* Importing Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@600&display=swap');
+
+/* Base Font Style */
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+
+p, .form-control, .footer .link, .footer .connect p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #555;
+}
+
+.hero-section, .author-section {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease-in-out;
+  font-family: 'Roboto', sans-serif;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 4px 10px rgba(255, 255, 255, 0.6);
+  text-align: center;
+  color: #fff;
+  transition: opacity 0.3s ease;
+}
+
+.hero-content h1, .hero-content p {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+
+.hero-content h1 {
+  animation-delay: 0.3s;
+  font-size: 36px;
+}
+
+.hero-content p {
+  animation-delay: 0.5s;
+  font-size: 18px;
+}
+
+.hero-button {
+  padding: 14px 36px;
+  border-radius: 30px;
+  font-weight: 600;
+
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.hero-button:hover {
+
+  transform: scale(1.05);
+}
+
+/* Gallery Item */
+.gallery-item {
+  perspective: 1500px;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: scale(1.05);
+}
+
+.gallery-img {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-img {
+  transform: scale(1.05);
+}
+
+.hover_to-black {
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.hover_to-black:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Sidebar for smaller screens */
+@media (max-width: 768px) {
+  .p-3.text-white.shadow-lg.min-vh-100.bg-primary {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+  }
+
+  .p-3.text-white.shadow-lg.min-vh-100.bg-primary.active {
+    transform: translateX(0);
+  }
+
+  .p-3.text-white.shadow-lg.min-vh-100.bg-primary {
+    transform: translateX(-100%);
+  }
+}
+
+/* Footer Styles */
+.footer {
+  background-color: #333;
+  color: #fff;
+  padding: 40px 20px;
+  text-align: center;
+  transition: background-color 0.3s ease-in-out;
+  font-family: 'Roboto', sans-serif;
+}
+
+.footer:hover {
+  background-color: #444;
+}
+
+.footer .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer .links {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer .links:hover {
+  transform: translateY(-5px);
+}
+
+.footer .link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.footer .link:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+/* Footer Connect Section */
+.footer .connect {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #444;
+}
+
+.footer .connect h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.footer .connect p {
+  font-size: 14px;
+  color: #bbb;
+}
+
+.footer .connect:hover h3 {
+  transform: translateX(5px);
+}
+ 
+/* Remove underline from nav links */
+nav a {
+  text-decoration: none;
+/* You can change this to your desired link color */
+  transition: color 0.3s ease;
+}
+
+/* Add hover effect (optional) */
+nav a:hover {
+  text-decoration: none;
+/* Change color on hover */
+}
+
+
+/* Custom Gallery Section */
+.custom-gallery-section {
+  background-color: #1b1919; /* Light gray background */
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* Title Styling */
+.custom-gallery-title {
+ color: #f4f4f4;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Content Styling */
+.custom-gallery-content {
+  padding: 0 20px;
+  text-align: center;
+}
+
+/* Row for Gallery Items */
+.custom-gallery-row {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Individual Gallery Items */
+.custom-gallery-item {
+  transition: transform 0.3s ease;
+  flex-basis: 32%; /* Ensures items are evenly spaced */
+  margin-bottom: 20px;
+  position: relative;
+}
+
+/* Image Styling */
+.custom-gallery-img {
+  width: 100%; /* Makes the image take up the full width of its container */
+  height: 200px; /* Sets a fixed height to make the images the same size */
+  object-fit: cover; /* Ensures the image covers the entire container without distortion */
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+/* Hover Effect on Items */
+.custom-gallery-item:hover {
+  transform: scale(1.05);
+}
+
+.custom-gallery-item:hover .custom-gallery-img {
+  transform: scale(1.1); /* Slightly zoom the image on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .custom-gallery-row {
+    display: block; /* Stacks items vertically on smaller screens */
+  }
+
+  .custom-gallery-item {
+    margin-bottom: 20px;
+    flex-basis: 100%; /* Makes the items take up the full width of the container */
+  }
+
+  .custom-gallery-img {
+    height: 250px; /* Adjust the image height for smaller screens */
+  }
+}
+/* إزالة الحدود أسفل النافبار */
+.navbar-custom {
+  border-bottom: none; /* إزالة الحدود أسفل النافبار */
+  box-shadow: none; /* إزالة أي ظل قد يظهر أسفل النافبار */
+}
+
+
+.navbar-custom .nav-link {
+  color: #fff; /* النص في الروابط أبيض */
+  background-color: transparent; /* خلفية شفافة للروابط */
+  padding: 10px 20px; /* إضافة مساحة حول النص */
+  border: 2px solid transparent; /* إضافة حدود شفافة */
+  border-radius: 5px; /* حواف دائرية */
+  transition: all 0.3s ease; /* إضافة تأثيرات انتقال سلسة */
+}
+
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link:focus {
+  color: #000; /* تغيير اللون عند التمرير إلى الأسود */
+  background-color: #fff; /* تغيير الخلفية إلى الأبيض */
+  border-color: #000; /* تغيير اللون الحدودي إلى الأسود */
+}
+
+.navbar-custom .navbar-brand {
+  color: #fff !important; /* النص في الـ Navbar brand أبيض */
+}
+
+.navbar-custom .navbar-toggler {
+  border-color: #fff; /* إضافة حد أبيض لزر التبديل في الـ Navbar */
+}
+
+
+
+/* إضافة تأثير عند التمرير فوق الأزرار */
+.nav-button:hover {
+  color: #000; /* تغيير النص إلى الأسود */
+  background-color: #fff; /* تغيير الخلفية إلى الأبيض */
+  border-color: #000; /* إضافة حد أسود */
+}
+
+

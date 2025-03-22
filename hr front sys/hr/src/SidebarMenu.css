@@ -598,3 +598,32 @@ h1, .h1 {
       left: 0;
   }
 }
+/* Custom Text Shadow */
+.text-shadow-custom {
+  text-shadow: 3px 3px 12px rgba(0, 0, 0, 1);
+}
+
+/* Navbar Brand Styling */
+.nav-brand {
+  border-bottom: 2px solid #000000; /* Adds border under the brand */
+  padding-bottom: 5px;
+  transition: all 0.3s ease;
+}
+
+
+
+/* Navbar Link Styling */
+.nav-link {
+  border-bottom: 2px solid transparent; /* Border bottom with transparent initially */
+  padding: 10px 15px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+/* Add border around Navbar */
+.navbar {
+  border-top: 2px solid #000000;
+  border-bottom: 2px solid #000000;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

@@ -1,11 +1,40 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import api from "./api";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { BrowserRouter as Router, useLocation } from "react-router-dom";
 
-// تحميل الأنماط بناءً على كود الشركة
+const RootComponent = () => {
+  const location = useLocation();
+  const [companyCode, setCompanyCode] = useState(() => getCompanyDataFromLocalStorage());
+  const [isLoggedIn, setIsLoggedIn] = useState(!!companyCode);
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      applyStyle("landing");
+      return;
+    }
+
+    if (isLoggedIn && companyCode) {
+      const cachedStyle = localStorage.getItem("style");
+      if (cachedStyle) {
+        applyStyle(cachedStyle);
+      } else {
+        loadCompanyStyle(companyCode).then((styleName) => {
+          applyStyle(styleName);
+          localStorage.setItem("style", styleName);
+        });
+      }
+    } else {
+      applyStyle("default");
+    }
+  }, [isLoggedIn, companyCode, location.pathname]);
+
+  return <App />;
+};
+
 const loadCompanyStyle = async (companyCode) => {
   if (!companyCode) {
     console.warn("⚠️ No company code found, using default CSS.");
@@ -25,11 +54,10 @@ const loadCompanyStyle = async (companyCode) => {
   }
 };
 
-// تطبيق النمط الديناميكي
 const applyStyle = (styleName) => {
   const existingLink = document.getElementById("dynamic-style");
   if (existingLink) {
-    existingLink.href = `/css/${styleName}.css`; // تحديث الرابط بدلاً من إضافته مجددًا
+    existingLink.href = `/css/${styleName}.css`;
   } else {
     const link = document.createElement("link");
     link.id = "dynamic-style";
@@ -41,39 +69,16 @@ const applyStyle = (styleName) => {
   }
 };
 
-// التحقق من حالة تسجيل الدخول واسترجاع بيانات الشركة من localStorage
 const getCompanyDataFromLocalStorage = () => {
   const companyData = JSON.parse(localStorage.getItem("company"));
   return companyData ? companyData.company_code : null;
 };
 
-const RootComponent = () => {
-  const [companyCode, setCompanyCode] = useState(() => getCompanyDataFromLocalStorage());
-  const [isLoggedIn, setIsLoggedIn] = useState(!!companyCode);
-
-  // استخدام useEffect لتحميل الأنماط عندما يتم التحقق من حالة تسجيل الدخول
-  useEffect(() => {
-    if (isLoggedIn && companyCode) {
-      const cachedStyle = localStorage.getItem("style"); // استخدام التخزين المحلي لاختيار النمط
-      if (cachedStyle) {
-        applyStyle(cachedStyle);
-      } else {
-        loadCompanyStyle(companyCode).then((styleName) => {
-          applyStyle(styleName);
-          localStorage.setItem("style", styleName); // تخزين النمط في localStorage
-        });
-      }
-    } else {
-      applyStyle("default");
-    }
-  }, [isLoggedIn, companyCode]);
-
-  return <App />;
-};
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RootComponent />
+    <Router>
+      <RootComponent />
+    </Router>
   </React.StrictMode>
 );
