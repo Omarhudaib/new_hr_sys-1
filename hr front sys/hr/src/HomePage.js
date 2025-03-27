@@ -87,9 +87,19 @@ const Dashboard = () => {
     }
   }, [company, month, year]);
   
-
+  const formatTime = (dateTimeString) => {
+    const date = new Date(dateTimeString);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
   const closeMapModal = () => setShowModal(false);
-
+  const formatHours= (hours) => {
+    const totalMinutes = Math.round(hours * 60); // تحويل الساعات إلى دقائق
+    const hrs = Math.floor(totalMinutes / 60); // استخراج عدد الساعات
+    const mins = totalMinutes % 60; // استخراج الدقائق المتبقية
+    return `${hrs}h ${mins}m`; // إرجاع التنسيق النهائي
+  };
   const openDailyDataModal = (dailyData) => setDailyDataModal({ show: true, data: dailyData });
   const closeDailyDataModal = () => setDailyDataModal({ show: false, data: [] });
 
@@ -162,10 +172,12 @@ const Dashboard = () => {
         </div>
       </div>
 
+
       {/* Main Content */}
       <div className="row">
+        
         {/* Chart Section */}
-        <div className="mb-4 col-xl-8">
+        <div className="mb-4 col-xl-12">
           <div className="shadow-sm card h-100">
             <div className="bg-white card-header">
               <h5 className="m-0">
@@ -220,7 +232,38 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
+        <div className="mb-4 col-xl-8">
+  <div className="shadow-sm card h-100">
+    <div className="bg-white card-header">
+      <h5 className="m-0">
+        <FontAwesomeIcon icon={faClock} className="me-2 text-primary" />
+        Daily Check-ins
+      </h5>
+    </div>
+    <div className="p-0 card-body">
+      {dailyCheckIns?.data?.length > 0 ? (
+        <div className="list-group list-group-flush">
+          {dailyCheckIns.data.map((checkIn) => (
+            <div key={checkIn.id} className="list-group-item">
+              <div className="d-flex align-items-center">
+                <FontAwesomeIcon icon={faUserClock} className="me-3 text-primary" />
+                <div>
+                  <strong>{checkIn.user?.first_name} {checkIn.user?.last_name}</strong>
+                  <div className="text-muted small">
+                    Checked in at {formatTime(checkIn.check_in)}
+                    {checkIn.check_out && <> and checked out at {formatTime(checkIn.check_out)}</>}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="py-5 text-center text-muted">No daily check-ins available</div>
+      )}
+    </div>
+  </div>
+</div>
         {/* Notifications Section */}
         <div className="mb-4 col-xl-4">
           <div className="shadow-sm card h-100">
@@ -300,10 +343,10 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="text-end">{employee.total_hours}h</td>
-                    <td className="text-end text-warning">{employee.overtime_hours}h</td>
-                    <td className="text-end text-danger">{employee.delay_hours}h</td>
-                    <td className="text-end">${employee.final_salary}</td>
+                    <td className="text-end">{formatHours(employee.total_hours)}</td>
+      <td className="text-end text-warning">{formatHours(employee.overtime_hours)}</td>
+      <td className="text-end text-danger">{formatHours(employee.delay_hours)}</td>
+                    <td className="text-end">{employee.final_salary}</td>
                     <td className="text-center">
                       <button 
                         className="btn btn-sm btn-outline-primary"
@@ -389,6 +432,7 @@ const Dashboard = () => {
       )}
       {/* Add modals here (same as before but styled similarly) */}
     </div>
+    
   );
 };
 

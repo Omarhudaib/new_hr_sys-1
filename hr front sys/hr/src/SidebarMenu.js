@@ -18,6 +18,7 @@ const SidebarMenu = ({ handleLogout }) => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
 
+  // Function to handle logout
   const handleLogoutClick = async () => {
     try {
       const token = localStorage.getItem("authToken");
@@ -25,11 +26,11 @@ const SidebarMenu = ({ handleLogout }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // مسح البيانات بعد تسجيل الخروج
+      // Clear data after logout
       localStorage.removeItem("authToken");
       localStorage.removeItem("company");
 
-      // توجيه المستخدم إلى صفحة تسجيل الدخول
+      // Redirect to login page
       navigate("/");
     } catch (error) {
       console.error("Error logging out:", error);
@@ -38,12 +39,12 @@ const SidebarMenu = ({ handleLogout }) => {
 
   const sidebarStyle = {
     transition: "all 0.3s ease",
-    width: collapsed ? "4rem" : "16rem", // 4rem للمُصغر و16rem للممتد
+    width: collapsed ? "4rem" : "16rem", // 4rem for collapsed and 16rem for expanded
   };
 
   return (
     <div className="p-3 text-white shadow-lg min-vh-100 bg-primary" style={{ ...sidebarStyle, height: "auto" }}>
-      {/* زر التوسيع والتصغير والعنوان */}
+      {/* Header and Collapse Button */}
       <div className="mb-4 d-flex justify-content-between align-items-center">
         {!collapsed && <h2 className="text-white fs-4 fw-bold">HR System</h2>}
         <button
@@ -54,9 +55,9 @@ const SidebarMenu = ({ handleLogout }) => {
         </button>
       </div>
 
-      {/* القائمة */}
+      {/* Main Menu */}
       <nav>
-        {/* الإدارة العامة */}
+        {/* General Management */}
         <SidebarItem
           icon={<Home size={20} />}
           text="Home"
@@ -65,34 +66,52 @@ const SidebarMenu = ({ handleLogout }) => {
           color="text-white"
         />
 
-        {/* إدارة الشركة */}
+        {/* Company Management */}
         <SidebarDropdown
           icon={<Building size={20} />}
           text="Company"
           collapsed={collapsed}
           links={[
             { path: "/company-settings", label: "Company Settings" },
-            // { path: "/attendance-reports", label: "Company Reports" }, // تم تعطيله مؤقتًا
           ]}
         />
 
-        {/* إدارة الموارد البشرية (HR) */}
+        {/* HR Management */}
         <SidebarDropdown
           icon={<Users size={20} />}
           text="HR Management"
           collapsed={collapsed}
           links={[
-            { path: "/DepartmentAdmin", label: "Department Admins" },
             { path: "/users", label: "Users" },
             { path: "/users/create", label: "Create User" },
             { path: "/role", label: "Roles" },
-            { path: "/PermissionManagement", label: "Permission Management" },
+          ]}
+        />
+
+        {/* Evaluations Management */}
+        <SidebarDropdown
+          icon={<ClipboardList size={20} />}
+          text="Evaluations"
+          collapsed={collapsed}
+          links={[
             { path: "/Evaluations", label: "Evaluations" },
+            { path: "/Evaluation", label: "New Evaluations" },
+          ]}
+        />
+
+        {/* Permissions Management */}
+        <SidebarDropdown
+          icon={<Folder size={20} />}
+          text="Permissions"
+          collapsed={collapsed}
+          links={[
+            { path: "/DepartmentAdmin", label: "Department Admins" },
+            { path: "/PermissionManagement", label: "Permission Management" },
             { path: "/Permission", label: "Permissions" },
           ]}
         />
 
-        {/* إدارة الحضور والغياب */}
+        {/* Attendance Management */}
         <SidebarDropdown
           icon={<ClipboardList size={20} />}
           text="Attendance"
@@ -108,7 +127,7 @@ const SidebarMenu = ({ handleLogout }) => {
           ]}
         />
 
-        {/* إدارة الإجازات */}
+        {/* Leave Management */}
         <SidebarDropdown
           icon={<Calendar size={20} />}
           text="Leave Management"
@@ -119,7 +138,7 @@ const SidebarMenu = ({ handleLogout }) => {
           ]}
         />
 
-        {/* إدارة الأقسام */}
+        {/* Departments Management */}
         <SidebarDropdown
           icon={<Folder size={20} />}
           text="Departments"
@@ -130,7 +149,7 @@ const SidebarMenu = ({ handleLogout }) => {
           ]}
         />
 
-        {/* تسجيل الخروج */}
+        {/* Logout */}
         <SidebarItem
           icon={<LogOut size={20} />}
           text="Logout"
@@ -143,7 +162,7 @@ const SidebarMenu = ({ handleLogout }) => {
   );
 };
 
-// مكون العنصر الفردي
+// Single Item Component
 const SidebarItem = ({ icon, text, collapsed, onClick, color = "text-white" }) => (
   <div
     onClick={onClick}
@@ -155,12 +174,13 @@ const SidebarItem = ({ icon, text, collapsed, onClick, color = "text-white" }) =
   </div>
 );
 
-// مكون القائمة المنسدلة
+// Dropdown Component
 const SidebarDropdown = ({ icon, text, collapsed, links }) => {
   const [open, setOpen] = useState(false);
 
   return (
     <div>
+      {/* Dropdown Header */}
       <div
         className="gap-2 p-2 text-white rounded d-flex align-items-center"
         style={{ cursor: "pointer" }}
@@ -170,6 +190,7 @@ const SidebarDropdown = ({ icon, text, collapsed, links }) => {
         {!collapsed && <span className="text-white fw-bold">{text}</span>}
       </div>
 
+      {/* Dropdown Links */}
       {!collapsed && open && (
         <div className="border-white ms-3 border-start ps-2">
           {links.map((link, index) => (

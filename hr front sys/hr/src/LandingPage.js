@@ -29,6 +29,7 @@ const LandingPage = () => {
     phone: '',
     message: ''
   });
+  const [errors, setErrors] = useState({});
   const [isContactLoading, setIsContactLoading] = useState(false);
   const [contactSuccess, setContactSuccess] = useState(false);
   const [contactError, setContactError] = useState('');
@@ -39,21 +40,25 @@ const LandingPage = () => {
     try {
       const response = await api.post('/contact', contactData);
       if (response.status === 200) {
-        setContactSuccess(true);
-        setContactData({ name: '', email: '', phone: '', message: '' });
-        setTimeout(() => setContactSuccess(false), 5000);
+        setContactSuccess(true); // Set success state to true
+        setContactData({ name: '', email: '', phone: '', message: '' }); // Clear form fields
+        setTimeout(() => setContactSuccess(false), 5000); // Reset success state after 5 seconds
       }
     } catch (err) {
-      setContactError('Failed to send message. Please try again.');
+      // Handle server-side errors
+      if (err.response && err.response.data && err.response.data.errors) {
+        setErrors(err.response.data.errors); // Store field-specific errors
+      } else {
+        setErrors({ general: 'Failed to send message. Please try again.' }); // General error
+      }
     } finally {
-      setIsContactLoading(false);
+      setIsContactLoading(false); // Stop loading spinner
     }
   };
   // State for login form
   const [formData, setFormData] = useState({ company_code: '', password: '' });
   const [loginError, setLoginError] = useState(false);
   const navigate = useNavigate();
-
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -63,11 +68,14 @@ const LandingPage = () => {
       localStorage.setItem('company', JSON.stringify(company));
       navigate('/home');
     } catch (err) {
-      setLoginError(true);
-      setTimeout(() => setLoginError(false), 1000);
+      // تحديث حالة الأخطاء بناءً على الرد من السيرفر
+      if (err.response && err.response.data && err.response.data.errors) {
+        setErrors(err.response.data.errors); // تخزين الأخطاء القادمة من السيرفر
+      } else {
+        setErrors({ general: 'Login failed. Please try again.' }); // خطأ عام إذا لم تكن هناك تفاصيل
+      }
     }
   };
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -102,6 +110,7 @@ const LandingPage = () => {
 
    
   </Container>
+  <hr></hr>
 </Navbar>
 
 
@@ -231,40 +240,42 @@ const LandingPage = () => {
             <Col md={6}>
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="p-4 rounded shadow-lg">
                 <h3 className="mb-4 text-center" style={{ color: '#f9f5f8' }}>Login to Your Company</h3>
-                <form onSubmit={handleLoginSubmit} style={{ background: 'rgba(0, 0, 0, 0.6)', padding: '20px', borderRadius: '10px' }}>
-                  <div className="mb-3">
-                    <label htmlFor="company_code" className="fw-bold" style={{ color: '#fff' }}>Company Code</label>
-                    <input
-                      type="text"
-                      id="company_code"
-                      name="company_code"
-                      className="form-control"
-                      placeholder="Enter Company Code"
-                      value={formData.company_code}
-                      onChange={handleChange}
-                      required
-                      style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', color: '#000', borderRadius: '8px', padding: '10px', fontSize: '1rem' }}
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="password" className="fw-bold" style={{ color: '#fff' }}>Password</label>
-                    <input
-                      type="password"
-                      id="password"
-                      name="password"
-                      className="form-control"
-                      placeholder="Enter Password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      required
-                      style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', color: '#000', borderRadius: '8px', padding: '10px', fontSize: '1rem' }}
-                    />
-                  </div>
-                  <button type="submit" className="btn btn-dark w-100" style={{ borderRadius: '8px', padding: '12px', backgroundColor: '#333', borderColor: '#333' }}>
-                    Login
-                  </button>
-                  {loginError && <p className="text-danger">Login failed. Please try again.</p>}
-                </form>
+               <form onSubmit={handleLoginSubmit} style={{ background: 'rgba(0, 0, 0, 0.6)', padding: '20px', borderRadius: '10px' }}>
+  <div className="mb-3">
+    <label htmlFor="company_code" className="fw-bold" style={{ color: '#fff' }}>Company Code</label>
+    <input
+      type="text"
+      id="company_code"
+      name="company_code"
+      className="form-control"
+      placeholder="Enter Company Code"
+      value={formData.company_code}
+      onChange={handleChange}
+      required
+      style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', color: '#000', borderRadius: '8px', padding: '10px', fontSize: '1rem' }}
+    />
+    {errors.company_code && <p className="text-danger">{errors.company_code}</p>}
+  </div>
+  <div className="mb-3">
+    <label htmlFor="password" className="fw-bold" style={{ color: '#fff' }}>Password</label>
+    <input
+      type="password"
+      id="password"
+      name="password"
+      className="form-control"
+      placeholder="Enter Password"
+      value={formData.password}
+      onChange={handleChange}
+      required
+      style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', color: '#000', borderRadius: '8px', padding: '10px', fontSize: '1rem' }}
+    />
+    {errors.password && <p className="text-danger">{errors.password}</p>}
+  </div>
+  {errors.general && <p className="text-danger">{errors.general}</p>}
+  <button type="submit" className="btn btn-dark w-100" style={{ borderRadius: '8px', padding: '12px', backgroundColor: '#333', borderColor: '#333' }}>
+    Login
+  </button>
+</form>
               </motion.div>
             </Col>
           </Row>
@@ -418,9 +429,7 @@ const LandingPage = () => {
                     {isContactLoading ? 'Sending...' : 'Submit'}
                   </button>
                 </div>
-                {contactSuccess && <p className="text-success">Message sent successfully!</p>}
-                {contactError && <p className="text-danger">{contactError}</p>}
-           
+{contactSuccess && <p className="text-success">Message sent successfully!</p>}
               </form>
             </motion.div>
           </Row>

@@ -29,7 +29,8 @@ import MissingCheckoutsPage from "./Company/MissingCheckoutsPage";
 import CheckInSummaryDep from "./Company/CheckInSummaryDep";
 import CheckInSummaryChart from "./CheckIns/CheckInSummaryChart";
 import LoginSuperAdmin from "./LoginSuperAdmin";
-import EmployeeEvaluations from "./Users/EmployeeEvaluations"; 
+import EmployeeEvaluations from "./Users/EmployeeEvaluations";
+import EmployeeEvaluation from "./Users/EmployeeEvaluation"; 
 import PermissionManagement from "./Users/PermissionManagement";
 import Permission from "./Users/Permission";
 import DepartmentAdmin from "./Users/DepartmentAdmin";
@@ -71,6 +72,7 @@ const App = () => {
     <Route path="missingcheckouts" element={<MissingCheckoutsPage />} />
     <Route path="CheckInSummaryChart" element={<CheckInSummaryChart />} />
     <Route path="Evaluations" element={<EmployeeEvaluations />} />
+    <Route path="Evaluation" element={<EmployeeEvaluations/>} />
     <Route path="PermissionManagement" element={<PermissionManagement />} />
     <Route path="Permission" element={<Permission />} />
     <Route path="DepartmentAdmin" element={<DepartmentAdmin/>} />

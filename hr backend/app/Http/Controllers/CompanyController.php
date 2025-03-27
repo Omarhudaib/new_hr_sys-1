@@ -100,8 +100,8 @@ public function dashboard($companyCode, $month, $year)
     $daysElapsed = $currentDate->day;
 
     // Calculate expected work hours up to the current date (pro-rated for part of the month)
-    $monthlyStandardHours = $standardHours * $daysInMonth;
-    $proratedHours = $standardHours * $daysElapsed; // This is the work hours expected until today
+    $monthlyStandardHours = 192;
+    $proratedHours = 192; // This is the work hours expected until today
 
     // Retrieve users
     $users = $company->users;
@@ -163,7 +163,6 @@ public function dashboard($companyCode, $month, $year)
             $totalHours += $workedHours;
         }
 
-        // Calculate overtime hours and delay hours based on prorated standard hours for the partial month
         $overtimeHours = $overtimeEnabled ? max(0, $totalHours - $proratedHours) : 0;
         $overtimeAmount = $overtimeHours * $overtimeRate;
         $delayHours = max(0, $proratedHours - $totalHours);

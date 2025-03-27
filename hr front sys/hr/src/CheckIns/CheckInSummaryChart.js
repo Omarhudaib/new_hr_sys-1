@@ -76,7 +76,7 @@ const Dashboard = () => {
       Promise.all([
         api.get(`/company/${company.company_code}/dashboard/${month}/${year}`),
         api.get(`/notifications/${company.company_code}`),
-        api.get(`/checkins/dailyCheckIns/${company.company_code}`)
+      
       ]).then(([dashboardRes, notificationsRes, checkinsRes]) => {
         setDashboardData(dashboardRes.data);
         setNotifications(notificationsRes.data);
@@ -85,11 +85,13 @@ const Dashboard = () => {
     }
   }, [company, month, year]);
 
-  const openMapModal = (latitude, longitude) => {
-    setMapLocation({ latitude, longitude });
-    setShowModal(true);
-  };
 
+  const formatHours= (hours) => {
+    const totalMinutes = Math.round(hours * 60); // تحويل الساعات إلى دقائق
+    const hrs = Math.floor(totalMinutes / 60); // استخراج عدد الساعات
+    const mins = totalMinutes % 60; // استخراج الدقائق المتبقية
+    return `${hrs}h ${mins}m`; // إرجاع التنسيق النهائي
+  };
   const closeMapModal = () => setShowModal(false);
 
   const openDailyDataModal = (dailyData) => setDailyDataModal({ show: true, data: dailyData });
@@ -349,9 +351,9 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="text-end">{employee.total_hours}h</td>
-                    <td className="text-end text-warning">{employee.overtime_hours}h</td>
-                    <td className="text-end text-danger">{employee.delay_hours}h</td>
+                    <td className="text-end">{formatHours(employee.total_hours)}</td>
+      <td className="text-end text-warning">{formatHours(employee.overtime_hours)}</td>
+      <td className="text-end text-danger">{formatHours(employee.delay_hours)}</td>
                     <td className="text-end">${employee.final_salary}</td>
                     <td className="text-center">
                       <button 

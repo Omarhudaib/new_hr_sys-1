@@ -123,6 +123,8 @@ Route::get('/user-permissions/{company_code}', [UserPermissionController::class,
     Route::get('employee-evaluations/{companyCode}', [EmployeeEvaluationController::class, 'index']);
     Route::post('employee-evaluations/{companyCode}', [EmployeeEvaluationController::class, 'store']);
     Route::put('employee-evaluations/{id}', [EmployeeEvaluationController::class, 'update']);
+    Route::get('co/evaluat', [EmployeeEvaluationController::class, 'getUsersForEvaluation']);
+    Route::post('co/evaluations{companyCode}', [EmployeeEvaluationController::class, 'storeEvaluation']);
 });
 
 
